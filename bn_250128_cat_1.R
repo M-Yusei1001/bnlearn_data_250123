@@ -3,16 +3,16 @@
 library(bnlearn)
 
 #データ読み込み,処理
-product <- read.csv("~/rscripts/data/250124_8/data_products_20250124.csv")
+product <- read.csv("~/rscripts/data/250128_cat_1/data_products_20250128_cat.csv")
 product <- as.data.frame(lapply(product, factor))
 
-states <- read.csv("~/rscripts/data/250124_8/data_states_20250124.csv")
+states <- read.csv("~/rscripts/data/250128_cat_1/data_states_20250128_cat.csv")
 states <- states$states
 
-incidents <- read.csv("~/rscripts/data/250124_8/data_incidents_20250124.csv")
+incidents <- read.csv("~/rscripts/data/250128_cat_1/data_incidents_20250128_cat.csv")
 incidents <- incidents$incidents
 
-causes <- read.csv("~/rscripts/data/250124_8/data_causes_20250124.csv")
+causes <- read.csv("~/rscripts/data/250128_cat_1/data_causes_20250128_cat.csv")
 causes <- causes$causes
 
 print("Data load: done")
@@ -147,7 +147,7 @@ bl <- bl[complete.cases(bl), ]
 dag <- hc(product, blacklist = bl, score = "aic")
 
 # パラメータ学習
-fitted = bn.fit(dag, product, method = "bayes")
+fitted = bn.fit(dag, product, method = "bayes",)
 
 # グラフのプロット
 graphviz.plot(fitted)
@@ -157,5 +157,5 @@ score(dag, product, type = "aic")
 score(dag, product, type = "bic")
 
 # DOT言語のファイルを出力
-write.dot("~/rscripts/output/data_250124_8.dot", fitted)
+write.dot("~/rscripts/output/data_250128_cat.dot", fitted)
 
