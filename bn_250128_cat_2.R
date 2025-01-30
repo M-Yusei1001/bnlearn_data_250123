@@ -2,21 +2,26 @@
 # ライブラリ読み込み
 library(bnlearn)
 
-#データ読み込み,処理
-product <- read.csv("~/rscripts/data/250128_cat_1/data_products_20250128_cat.csv")
+# データ読み込み,処理
+product <- read.csv("~/rscripts/data/250128_cat_2/data_products_20250128_cat.csv")
 product <- as.data.frame(lapply(product, factor))
 
-states <- read.csv("~/rscripts/data/250128_cat_1/data_states_20250128_cat.csv")
+states <- read.csv("~/rscripts/data/250128_cat_2/data_states_20250128_cat.csv")
 states <- states$states
 
-incidents <- read.csv("~/rscripts/data/250128_cat_1/data_incidents_20250128_cat.csv")
+incidents <- read.csv("~/rscripts/data/250128_cat_2/data_incidents_20250128_cat.csv")
 incidents <- incidents$incidents
 
-causes <- read.csv("~/rscripts/data/250128_cat_1/data_causes_20250128_cat.csv")
+causes <- read.csv("~/rscripts/data/250128_cat_2/data_causes_20250128_cat.csv")
 causes <- causes$causes
 
-print("Data load: done")
+arcset_s2c <- read.csv("~/rscripts/data/250128_cat_2/data_arcs_s2c_20250128_cat.csv")
+arcset_s2c <- as.matrix(arcset_s2c)
 
+arcset_c2i <- read.csv("~/rscripts/data/250128_cat_2/data_arcs_c2i_20250128_cat.csv")
+arcset_c2i <- as.matrix(arcset_c2i)
+
+print("Data load: done")
 
 # ブラックリスト作成
 createEmptyMatrix = function( nrow, ncol, colnames = c() ){
@@ -146,6 +151,14 @@ bl <- bl[complete.cases(bl), ]
 # 構造学習
 dag <- hc(product, blacklist = bl, score = "aic")
 
+# アーク追加設定
+for(i in 1:(length(arcset_s2c)/2)){
+  dag <- set.arc(dag, from = arcset_s2c[i,1], to = arcset_s2c[i,2])
+}
+for(i in 1:160){
+  dag <- set.arc(dag, from = arcset_c2i[i,1], to = arcset_c2i[i,2])
+}
+
 # パラメータ学習
 fitted = bn.fit(dag, product, method = "bayes")
 
@@ -157,5 +170,5 @@ score(dag, product, type = "aic")
 score(dag, product, type = "bic")
 
 # DOT言語のファイルを出力
-write.dot("~/rscripts/output/data_250128_cat.dot", fitted)
+write.dot("~/rscripts/output/data_250128_cat_2.dot", fitted)
 

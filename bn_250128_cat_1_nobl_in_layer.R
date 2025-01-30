@@ -1,4 +1,5 @@
-#data_250123は類似表現の統一をしたデータを用いたBN
+# bn_250128_cat_1 で、同じ層間のブラックリストを削除したもの
+
 # ライブラリ読み込み
 library(bnlearn)
 
@@ -30,55 +31,7 @@ N = (length(states) * length(states)) + (length(incidents) * length(incidents)) 
 
 bl <- createEmptyMatrix(N, colnames = c("from", "to"))
 
-# 層内のブラックリスト作成
 row_num = 1
-
-for (i in 1:length(states)){
-  for (j in 1:length(states)){
-    if (states[i] != states[j]){
-      if (is.na(states[i]) | is.na(states[j])){
-        next
-      }
-      bl[row_num, 1] <- states[i]
-      bl[row_num, 2] <- states[j]
-      row_num <- row_num + 1
-    }
-  }
-}
-print(row_num/N*100)
-print("Done: states and states")
-
-for (i in 1:length(incidents)){
-  for (j in 1:length(incidents)){
-    if (incidents[i] != incidents[j]){
-      if (is.na(incidents[i]) | is.na(incidents[j])){
-        next
-      }
-      bl[row_num, 1] <- incidents[i]
-      bl[row_num, 2] <- incidents[j]
-      row_num <- row_num + 1
-    }
-  }
-}
-print(row_num/N*100)
-print("Done: incidents and incidents")
-
-for (i in 1:length(causes)){
-  for (j in 1:length(causes)){
-    if (causes[i] != causes[j]){
-      if (is.na(causes[i]) | is.na(causes[j])){
-        next
-      }
-      bl[row_num, 1] <- causes[i]
-      bl[row_num, 2] <- causes[j]
-      row_num <- row_num + 1
-    }
-  }
-}
-
-print(row_num/N*100)
-print("Done: causes and causes")
-print("blacklist in each layers: done")
 
 #層間のブラックリスト指定
 for (i in 1:length(incidents)){
@@ -157,5 +110,5 @@ score(dag, product, type = "aic")
 score(dag, product, type = "bic")
 
 # DOT言語のファイルを出力
-write.dot("~/rscripts/output/data_250128_cat.dot", fitted)
+write.dot("~/rscripts/output/dot/data_250128_cat_nobl_in_layer.dot", fitted)
 
