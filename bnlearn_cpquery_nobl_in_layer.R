@@ -90,9 +90,9 @@ if(length(evd_list) == 1){
   filename <- paste(temp_begin, temp, temp_end, sep = "")
 }
 
-directory_states <- paste("~/rscripts/output/cpt/", filename, "_state_cpt.csv", sep = "")
-directory_inc <- paste("~/rscripts/output/cpt/", filename, "_inc_cpt.csv", sep = "")
-directory_cause <- paste("~/rscripts/output/cpt/", filename, "_cause_cpt.csv", sep = "")
+directory_states <- paste("~/rscripts/output/cpt/", filename, "_state_cpt_nobl.csv", sep = "")
+directory_inc <- paste("~/rscripts/output/cpt/", filename, "_inc_cpt_nobl.csv", sep = "")
+directory_cause <- paste("~/rscripts/output/cpt/", filename, "_cause_cpt_nobl.csv", sep = "")
 
 write.csv(matrix_states, file = directory_states, fileEncoding = "CP932")
 write.csv(matrix_inc, file = directory_inc, fileEncoding = "CP932")

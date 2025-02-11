@@ -23,6 +23,22 @@ if(length(evd_list) == 1){
   evd <- paste(temp_begin, temp, temp_end, sep = "")
 }
 
+isStateInEvd = function(state, evd_list = list()){
+  for(i in 1:length(evd_list)){
+    if(state == evd_list[i]){
+      return(TRUE)
+    }
+  }
+  return(FALSE)
+}
+
+for(i in 1:length(states)){
+  if(isStateInEvd(states[i], evd_list = evd_list)){
+    next
+  }
+  evd <- paste(evd, " & (", states[i], " == ", 0, ")", sep = "")
+}
+
 # クエリ実行
 matrix_states <- createEmptyMatrix(length(states), colnames = c("event", "probability"))
 
@@ -53,7 +69,7 @@ for(i in 1:length(incidents)){
     "n = 10^6", 
     ")",
     sep = ""
-    )
+  )
   result <- eval(parse(text = p))
   prob <- round(result, digits = 3)
   result <- paste(incidents[i], ":", prob)
@@ -96,9 +112,9 @@ if(length(evd_list) == 1){
   filename <- paste(temp_begin, temp, temp_end, sep = "")
 }
 
-directory_states <- paste("~/rscripts/output/cpt/", filename, "_state_cpt.csv", sep = "")
-directory_inc <- paste("~/rscripts/output/cpt/", filename, "_inc_cpt.csv", sep = "")
-directory_cause <- paste("~/rscripts/output/cpt/", filename, "_cause_cpt.csv", sep = "")
+directory_states <- paste("~/rscripts/output/cpt/", filename, "_state_cpt_2.csv", sep = "")
+directory_inc <- paste("~/rscripts/output/cpt/", filename, "_inc_cpt_2.csv", sep = "")
+directory_cause <- paste("~/rscripts/output/cpt/", filename, "_cause_cpt_2.csv", sep = "")
 
 write.csv(matrix_states, file = directory_states, fileEncoding = "CP932")
 write.csv(matrix_inc, file = directory_inc, fileEncoding = "CP932")
